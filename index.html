@@ -1,0 +1,162 @@
+<html>
+  
+<head>
+    <title>Fading Lotus</title>
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    integrity="sha256-t2/7smZfgrST4FS1DT0bs/KotCM74XlcqZN5Vu7xlrw="
+    crossorigin="anonymous" />
+    <style>
+      body {
+        margin: 0;
+        color: #f7ebe8;
+        background-color: #267772;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        position: relative;
+      }
+      #three {
+        position: absolute;
+      }
+      #headerText {
+        position: absolute;
+        padding: 24px;
+      }
+      h1 {
+        font-size: 6vmax;
+      }
+      h2 {
+        font-size: 3vmax;
+        color: #f7ebe8;
+      }
+      a {
+        color: #f7ebe8;
+        font-size: 2vmax;
+        margin-right: 1vmax;
+      }
+      a:visited {
+        color: #f7ebe8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="three"></div>
+      <div id="headerText">
+        <h1>I'm Chris <img src="static/assets/lotus_logo.png" alt="Fading Lotus logo" style="width:120px;height:101px;"> </h1>
+        <h2>A Graphics Designer in the UK</h2>
+        <a href="https://github.com/FadingLotus">GitHub</a>
+        <a href="https://discordapp.com/users/149295692462948352">Discord</a>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    <script>
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x1c1917);
+      document.getElementById("three").appendChild(renderer.domElement);
+
+      function createShape() {
+        function getRandom(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        const geometry = new THREE.IcosahedronGeometry(getRandom(0.1, 0.8), 0);
+        const material = new THREE.MeshPhongMaterial({
+          color: 0x00ffe1,
+          shading: THREE.FlatShading,
+          shininess: 0,
+        });
+        const wireframeMat = new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          shading: THREE.FlatShading,
+          wireframe: true,
+          transparent: true,
+        });
+
+        const shape = new THREE.SceneUtils.createMultiMaterialObject(geometry, [
+          material,
+          wireframeMat,
+        ]);
+
+        return {
+          shape,
+          xPos: getRandom(0, 1),
+          yPos: getRandom(0, 1),
+          zPos: getRandom(0, 1),
+          xRate: getRandom(-0.01, 0.01),
+          yRate: getRandom(-0.01, 0.01),
+          zRate: getRandom(-0.005, 0.005),
+          xRadius: getRandom(-2, 2),
+          yRadius: getRandom(-3, 3),
+          zRadius: getRandom(-3, 3),
+        };
+      }
+
+      function updateShape(shapeData) {
+        const { shape } = shapeData;
+        shapeData.shape.rotation.x += 0.01;
+        shapeData.shape.rotation.y += 0.01;
+        shapeData.shape.position.x =
+          shapeData.xRadius * Math.cos(shapeData.xPos);
+        shapeData.shape.position.y =
+          shapeData.yRadius * Math.cos(shapeData.yPos);
+        shapeData.shape.position.z =
+          shapeData.zRadius * Math.cos(shapeData.zPos);
+        shapeData.xPos += shapeData.xRate;
+        shapeData.yPos += shapeData.yRate;
+        shapeData.zPos += shapeData.zRate;
+      }
+
+      const light = new THREE.PointLight(0xffffff);
+      light.position.set(5, 0, 5);
+      scene.add(light);
+
+      camera.position.z = 3;
+
+      const shapeArray = [];
+      for (let i = 0; i < 5; i++) {
+        const shapeData = createShape();
+        shapeData.zRadius = i * 2;
+        shapeArray.push(shapeData);
+        scene.add(shapeData.shape);
+      }
+
+      const render = function () {
+        requestAnimationFrame(render);
+
+        shapeArray.forEach(updateShape);
+
+        renderer.render(scene, camera);
+      };
+
+      function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+      window.addEventListener("resize", onWindowResize, false);
+
+      render();
+    </script>
+    <script src="inobounce.js"></script>
+  </body>
+
+</html>
