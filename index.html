@@ -9,8 +9,10 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
-      integrity="sha256-t2/7smZfgrST4FS1DT0bs/KotCM74XlcqZN5Vu7xlrw="
-      crossorigin="anonymous"
+    />
+    <link 
+      rel="stylesheet" 
+      href="./mouse.css"
     />
     <style>
       body { margin: 0; color: #f7ebe8; background-color: #267772; } canvas
@@ -35,6 +37,9 @@
           />
         </h1>
         <h2>A Microsoft Paint expert</h2>
+        <br />
+        <br />
+        <br />
         <a href="https://github.com/FadingLotus">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -89,16 +94,20 @@
         <br />
         <br />
         <br />
+        <br />
         <h3>Current Projects</h3>
-        <a href="https://github.com/carbuncle-ffxiv/carbuncle"> Carbuncle </a>
-        <a href="https://github.com/lilith-discord-bot"> Lilith </a>
+        <br />
+        <a href="https://github.com/carbuncle-ffxiv/carbuncle">Carbuncle</a>
+        <a href="https://github.com/lilith-discord-bot">Lilith</a>
       </div>
     </div>
+
     <p
       style=" position: absolute; bottom: 0; left: 0; width: 100%; text-align: center;"
     >
       Copyright © 2023 Fading Lotus. All rights reserved.
     </p>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
     <script>
       const scene = new THREE.Scene();
@@ -189,10 +198,21 @@
       window.addEventListener("resize", onWindowResize, false);
 
       render();
+
     </script>
+
     <script src="inobounce.js"></script>
+
+    </section>
+
+    <div class="cursor"></div>
+    <div class="cursor2"></div>
+
+    <script  src="./script.js"></script>
+
     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com
     License - https://fontawesome.com/license (Commercial License) Copyright
     2023 Fonticons, Inc. -->
+
   </body>
 </html>
